@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard — E-GatePass Tata Steel</title>
+    <link rel="stylesheet" href="vgp-style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <!-- ─── SIDEBAR NAVIGATION ─── -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo-icon">🛡️</div>
+                <div class="sidebar-brand">
+                    <h2>E-GatePass</h2>
+                    <span>TATA STEEL · JAMSHEDPUR</span>
+                </div>
+            </div>
+            
+            <div class="sidebar-menu-title">Visitor Management</div>
+            <nav>
+                <ul class="sidebar-nav">
+                    <li class="sidebar-nav-item" id="menuDashboard">
+                        <a href="vgp-dashboard.html">
+                            <span>📊</span> Dashboard
+                        </a>
+                    </li>
+                    <li class="sidebar-nav-item" id="menuNewPass">
+                        <a href="vgp-new-pass.html">
+                            <span>📥</span> New Pass
+                        </a>
+                    </li>
+                    <li class="sidebar-nav-item" id="menuCheckOut">
+                        <a href="vgp-checkout.html">
+                            <span>📤</span> Check Out
+                        </a>
+                    </li>
+                    <li class="sidebar-nav-item" id="menuVisitorLog">
+                        <a href="vgp-log.html">
+                            <span>📅</span> Visitor Log
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <div class="operator-profile">
+                    <div class="operator-name" id="operatorName">Loading...</div>
+                    <div class="operator-role" id="operatorRole">Operator</div>
+                </div>
+                <button class="sidebar-logout-btn" id="logoutBtn">
+                    <span>🚪</span> Logout
+                </button>
+                <div class="sidebar-tagline">We also make tomorrow</div>
+            </div>
+        </aside>
+
+        <!-- ─── MAIN WRAPPER ─── -->
+        <div class="main-wrapper">
+            <!-- ─── APP HEADER ─── -->
+            <header class="app-header">
+                <div class="header-clock-section">
+                    <span class="header-clock-icon">🕒</span>
+                    <span id="liveClock">Loading Clock...</span>
+                </div>
+                <div class="header-right">
+                    <button class="lang-btn">🌐 EN</button>
+                </div>
+            </header>
+
+            <!-- ─── CONTENT BODY ─── -->
+            <main class="content-body">
+                <!-- Welcome Operator Banner -->
+                <div class="welcome-banner">
+                    <span>Tata Steel · Jamshedpur</span>
+                    <h2 id="welcomeText">Welcome, Operator</h2>
+                    <p>Today's visitor overview and access control panel.</p>
+                </div>
+
+                <!-- Stats Row -->
+                <div class="stats-row">
+                    <div class="stat-card">
+                        <div class="stat-icon-wrapper blue">👤</div>
+                        <div class="stat-info">
+                            <span class="stat-value" id="statPassesToday">0</span>
+                            <span class="stat-label">Passes Today</span>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon-wrapper green">📥</div>
+                        <div class="stat-info">
+                            <span class="stat-value" id="statCurrentlyInside">0</span>
+                            <span class="stat-label">Currently Inside</span>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon-wrapper orange">📤</div>
+                        <div class="stat-info">
+                            <span class="stat-value" id="statExitedToday">0</span>
+                            <span class="stat-label">Exited Today</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Dashboard Panels Grid -->
+                <div class="dashboard-grid-2">
+                    <!-- Panel: Passes by Gate -->
+                    <section class="panel-card">
+                        <div class="panel-header">
+                            <h3>Passes by Gate</h3>
+                        </div>
+                        <div class="panel-body">
+                            <div class="gate-list" id="gateStatsList">
+                                <div class="gate-item">
+                                    <div class="gate-meta">
+                                        <span class="gate-name">Main Gate</span>
+                                        <span class="gate-count" id="count-MainGate">0</span>
+                                    </div>
+                                    <div class="gate-bar-bg">
+                                        <div class="gate-bar-fill" id="bar-MainGate"></div>
+                                    </div>
+                                </div>
+                                
+                                <div class="gate-item">
+                                    <div class="gate-meta">
+                                        <span class="gate-name">Gate 2</span>
+                                        <span class="gate-count" id="count-Gate2">0</span>
+                                    </div>
+                                    <div class="gate-bar-bg">
+                                        <div class="gate-bar-fill" id="bar-Gate2"></div>
+                                    </div>
+                                </div>
+                                
+                                <div class="gate-item">
+                                    <div class="gate-meta">
+                                        <span class="gate-name">Gate 3</span>
+                                        <span class="gate-count" id="count-Gate3">0</span>
+                                    </div>
+                                    <div class="gate-bar-bg">
+                                        <div class="gate-bar-fill" id="bar-Gate3"></div>
+                                    </div>
+                                </div>
+                                
+                                <div class="gate-item">
+                                    <div class="gate-meta">
+                                        <span class="gate-name">Gate 4</span>
+                                        <span class="gate-count" id="count-Gate4">0</span>
+                                    </div>
+                                    <div class="gate-bar-bg">
+                                        <div class="gate-bar-fill" id="bar-Gate4"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Panel: Recent Activity -->
+                    <section class="panel-card">
+                        <div class="panel-header">
+                            <h3>Recent Activity</h3>
+                        </div>
+                        <div class="panel-body" style="padding: 16px;">
+                            <div class="activity-list" id="recentActivityList">
+                                <div class="no-records">
+                                    <span class="no-records-icon">🏭</span>
+                                    <p>No activity recorded today</p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script type="module" src="vgp-dashboard.js"></script>
+</body>
+</html>

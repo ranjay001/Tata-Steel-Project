@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tata Steel - CCS Dashboard</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background: #f4f6f9; color: #333; padding: 20px; }
+        .header { display: flex; justify-content: space-between; align-items: center; background: #0d47a1; color: white; padding: 15px 30px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .logout-btn { background: #c62828; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; font-weight: bold; }
+        .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 25px; }
+        .card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); text-align: center; border-top: 5px solid #0d47a1; }
+        .card h3 { color: #666; font-size: 14px; text-transform: uppercase; margin-bottom: 10px; }
+        .card .number { font-size: 32px; font-weight: bold; color: #111; }
+        .table-container { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .table-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th, td { text-align: left; padding: 12px 15px; border-bottom: 1px solid #ddd; }
+        th { background: #f1f5f9; color: #475569; }
+        .badge { padding: 4px 10px; border-radius: 12px; font-size: 12px; font-weight: bold; }
+        .badge-in { background: #e3f2fd; color: #0d47a1; }
+        .badge-out { background: #ffebee; color: #c62828; }
+        .filters { display: flex; gap: 15px; }
+        .filters input, .filters select { padding: 8px; border: 1px solid #ccc; border-radius: 4px; }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <div>
+            <h2>TATA STEEL</h2>
+            <p>Canteen Control Center (CCS) Dashboard</p>
+        </div>
+        <button class="logout-btn" onclick="logout()">Secure Logout</button>
+    </div>
+
+    <div class="grid">
+        <div class="card">
+            <h3>Aggregated Logs Today</h3>
+            <div class="number" id="count-total">0</div>
+        </div>
+        <div class="card" style="border-top-color: #2e7d32;">
+            <h3>Active Personnel Present</h3>
+            <div class="number" id="count-in">0</div>
+        </div>
+        <div class="card" style="border-top-color: #37474f;">
+            <h3>Total Out Processed</h3>
+            <div class="number" id="count-out">0</div>
+        </div>
+    </div>
+
+    <div class="table-container">
+        <div class="table-header">
+            <h3>Real-time Attendance Logs</h3>
+            <div class="filters">
+                <input type="text" id="searchBar" onkeyup="filterLiveLogs()" placeholder="Search SP Number...">
+                <select id="mealFilter" onchange="filterLiveLogs()">
+                    <option value="">All Meals</option>
+                    <option value="M01">Breakfast</option>
+                    <option value="M02">Lunch</option>
+                    <option value="M03">Evening Snack</option>
+                    <option value="M04">Dinner</option>
+                </select>
+            </div>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>SP Number</th>
+                    <th>Canteen Location</th>
+                    <th>Trolley Point</th>
+                    <th>Meal Type</th>
+                    <th>Punch Time</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody id="logsTableBody">
+                <tr>
+                    <td colspan="6" style="text-align:center; color:#999;">Loading live data stream...</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        // Check session authentication
+        if (!localStorage.getItem('session_token')) {
+            window.location.href = 'index.html';
+        }
+
+        function logout() {
+            localStorage.clear();
+            window.location.href = 'index.html';
+        }
+
+        const mealNames = { M01: "Breakfast", M02: "Lunch", M03: "Evening Snack", M04: "Dinner" };
+        let globalLogs = []; 
+
+        async function loadTelemetry() {
+            try {
+                const response = await fetch('/api/analytics');
+                if (!response.ok) throw new Error("API network error");
+                const data = await response.json();
+
+                document.getElementById('count-total').innerText = data.totalLogs ?? 0;
+                document.getElementById('count-in').innerText = data.currentIn ?? 0;
+                document.getElementById('count-out').innerText = data.totalOut ?? 0;
+
+                globalLogs = data.rawLogs || [];
+                renderTableData(globalLogs);
+            } catch (err) {
+                console.error("Dashboard core loop issue:", err);
+            }
+        }
+
+        function renderTableData(logsList) {
+            const tbody = document.getElementById('logsTableBody');
+            if (!tbody) return;
+            tbody.innerHTML = "";
+
+            if (logsList.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:#999;">No transaction records tracked today.</td></tr>`;
+                return;
+            }
+
+            logsList.forEach(log => {
+                const timeStr = new Date(log.tva_punch_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+                const statusClass = log.tva_flag === 'In' ? 'badge badge-in' : 'badge badge-out';
+                
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td><strong>${log.tva_sp_no}</strong></td>
+                    <td>${log.tva_can_id === 'C01' ? 'GBF Contractor Canteen' : log.tva_can_id}</td>
+                    <td>${log.tva_trolley_point}</td>
+                    <td>${mealNames[log.tva_meal_id] || log.tva_meal_id}</td>
+                    <td>${timeStr}</td>
+                    <td><span class="${statusClass}">${log.tva_flag.toUpperCase()}</span></td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function filterLiveLogs() {
+            const searchSp = document.getElementById('searchBar').value.trim().toLowerCase();
+            const selectedMeal = document.getElementById('mealFilter').value;
+
+            const filtered = globalLogs.filter(log => {
+                const matchSp = log.tva_sp_no.toLowerCase().includes(searchSp);
+                const matchMeal = selectedMeal === "" || log.tva_meal_id === selectedMeal;
+                return matchSp && matchMeal;
+            });
+            renderTableData(filtered);
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            loadTelemetry();
+            setInterval(loadTelemetry, 5000); // Quick refresh every 5 seconds
+        });
+    </script>
+</body>
+</html>

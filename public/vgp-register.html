@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register Operator — E-GatePass Tata Steel</title>
+    <link rel="stylesheet" href="vgp-style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body class="auth-body">
+    <div class="auth-container">
+        <div class="auth-header">
+            <div class="auth-logo-icon">🛡️</div>
+            <h1>E-GatePass</h1>
+            <span>TATA STEEL · JAMSHEDPUR</span>
+        </div>
+        
+        <div class="auth-card">
+            <h2>Register Account</h2>
+            <p>Create your operator account</p>
+            
+            <form id="registerForm">
+                <div class="form-group">
+                    <label for="regUserId">User ID</label>
+                    <input type="text" id="regUserId" placeholder="e.g. gateop1" required autocomplete="username">
+                </div>
+                
+                <div class="form-group">
+                    <label for="regFullName">Full Name</label>
+                    <input type="text" id="regFullName" placeholder="e.g. Rajesh Kumar" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="regGate">Assigned Gate</label>
+                    <select id="regGate" required>
+                        <option value="Main Gate">Main Gate</option>
+                        <option value="Gate 2">Gate 2</option>
+                        <option value="Gate 3">Gate 3</option>
+                        <option value="Gate 4">Gate 4</option>
+                        <option value="East Gate">East Gate</option>
+                        <option value="West Gate">West Gate</option>
+                    </select>
+                </div>
+                
+                <div class="form-row-2">
+                    <div class="form-group">
+                        <label for="regPassword">Password</label>
+                        <input type="password" id="regPassword" placeholder="Min. 6 characters" required autocomplete="new-password">
+                    </div>
+                    <div class="form-group">
+                        <label for="regConfirmPassword">Confirm Password</label>
+                        <input type="password" id="regConfirmPassword" placeholder="Re-enter password" required autocomplete="new-password">
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn-primary" id="registerBtn">Register</button>
+            </form>
+            
+            <div class="auth-switch-link">
+                Already have an account? <a href="vgp-login.html">Back to Login</a>
+            </div>
+        </div>
+        
+        <div class="auth-footer-tagline">
+            We also make tomorrow
+        </div>
+    </div>
+    
+    <script type="module" src="vgp-login.js"></script>
+</body>
+</html>

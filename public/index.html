@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tata Steel - Canteen Portal Login</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="login-bg">
+    <div class="login-wrapper">
+        <div class="brand-header">
+            <h2>TATA STEEL</h2>
+            <span>#WeAlsoMakeTomorrow</span>
+        </div>
+        <form id="loginForm" class="auth-card">
+            <h3>Portal Authentication</h3>
+            <div class="input-field">
+                <label>User Identity (ID)</label>
+                <input type="text" id="userid" required placeholder="e.g. admin24">
+            </div>
+            <div class="input-field">
+                <label>Security Password</label>
+                <input type="password" id="password" required placeholder="••••••">
+            </div>
+            <button type="submit" class="primary-btn">Secure Login</button>
+            <p id="errMessage" class="error-msg"></p>
+        </form>
+    </div>
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const userid = document.getElementById('userid').value;
+            const password = document.getElementById('password').value;
+            
+            const response = await fetch('/api/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ userid, password })
+            });
+            const result = await response.json();
+            if (result.success) {
+                localStorage.setItem('session_token', 'active_user');
+                window.location.href = result.redirect;
+            } else {
+                document.getElementById('errMessage').innerText = result.message;
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Gate Pass — E-GatePass Tata Steel</title>
+    <link rel="stylesheet" href="vgp-style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <!-- ─── SIDEBAR NAVIGATION ─── -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo-icon">🛡️</div>
+                <div class="sidebar-brand">
+                    <h2>E-GatePass</h2>
+                    <span>TATA STEEL · JAMSHEDPUR</span>
+                </div>
+            </div>
+            
+            <div class="sidebar-menu-title">Visitor Management</div>
+            <nav>
+                <ul class="sidebar-nav">
+                    <li class="sidebar-nav-item" id="menuDashboard">
+                        <a href="vgp-dashboard.html">
+                            <span>📊</span> Dashboard
+                        </a>
+                    </li>
+                    <li class="sidebar-nav-item" id="menuNewPass">
+                        <a href="vgp-new-pass.html">
+                            <span>📥</span> New Pass
+                        </a>
+                    </li>
+                    <li class="sidebar-nav-item" id="menuCheckOut">
+                        <a href="vgp-checkout.html">
+                            <span>📤</span> Check Out
+                        </a>
+                    </li>
+                    <li class="sidebar-nav-item" id="menuVisitorLog">
+                        <a href="vgp-log.html">
+                            <span>📅</span> Visitor Log
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <div class="operator-profile">
+                    <div class="operator-name" id="operatorName">Loading...</div>
+                    <div class="operator-role" id="operatorRole">Operator</div>
+                </div>
+                <button class="sidebar-logout-btn" id="logoutBtn">
+                    <span>🚪</span> Logout
+                </button>
+                <div class="sidebar-tagline">We also make tomorrow</div>
+            </div>
+        </aside>
+
+        <!-- ─── MAIN WRAPPER ─── -->
+        <div class="main-wrapper">
+            <!-- ─── APP HEADER ─── -->
+            <header class="app-header">
+                <div class="header-clock-section">
+                    <span class="header-clock-icon">🕒</span>
+                    <span id="liveClock">Loading Clock...</span>
+                </div>
+                <div class="header-right">
+                    <button class="lang-btn">🌐 EN</button>
+                </div>
+            </header>
+
+            <!-- ─── CONTENT BODY ─── -->
+            <main class="content-body">
+                <div class="form-panel-card">
+                    <h2 class="form-header-title">New Gate Pass</h2>
+                    <p class="form-header-sub">Register a visitor entering the premises</p>
+                    
+                    <form id="passForm" autocomplete="off">
+                        <div class="form-row-2">
+                            <div class="form-group">
+                                <label for="vName">Visitor Name</label>
+                                <input type="text" id="vName" placeholder="e.g. Amit Sharma" required minlength="2">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="vPhone">Phone Number</label>
+                                <input type="tel" id="vPhone" placeholder="e.g. 98765 43210" required pattern="[0-9]{10}" title="Enter a valid 10 digit number">
+                            </div>
+                        </div>
+
+                        <div class="form-row-2">
+                            <div class="form-group">
+                                <label for="vCompany">Company / Organization</label>
+                                <input type="text" id="vCompany" placeholder="e.g. ABC Pvt Ltd" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="vHost">Whom To Meet (Host)</label>
+                                <input type="text" id="vHost" placeholder="e.g. Mr. Verma" required>
+                            </div>
+                        </div>
+
+                        <div class="form-row-2">
+                            <div class="form-group">
+                                <label for="vDept">Department</label>
+                                <select id="vDept" required>
+                                    <option value="" disabled selected>Select department</option>
+                                    <option value="HR & Administration">HR & Administration</option>
+                                    <option value="Operations">Operations</option>
+                                    <option value="Safety & Security">Safety & Security</option>
+                                    <option value="Maintenance">Maintenance</option>
+                                    <option value="Engineering">Engineering</option>
+                                    <option value="Information Technology">Information Technology</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="vPurpose">Purpose of Visit</label>
+                                <select id="vPurpose" required>
+                                    <option value="" disabled selected>Select purpose</option>
+                                    <option value="Official Meeting">Official Meeting</option>
+                                    <option value="Contract Maintenance">Contract Maintenance</option>
+                                    <option value="Safety Audit">Safety Audit</option>
+                                    <option value="Delivery / Dispatch">Delivery / Dispatch</option>
+                                    <option value="Personal Interview">Personal Interview</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-row-2">
+                            <div class="form-group">
+                                <label for="vIdType">ID Proof Type</label>
+                                <select id="vIdType" required>
+                                    <option value="" disabled selected>Select ID proof</option>
+                                    <option value="Aadhaar Card">Aadhaar Card</option>
+                                    <option value="PAN Card">PAN Card</option>
+                                    <option value="Driving License">Driving License</option>
+                                    <option value="Voter ID">Voter ID</option>
+                                    <option value="Passport">Passport</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="vIdNum">ID Proof Number</label>
+                                <input type="text" id="vIdNum" placeholder="e.g. XXXX-XXXX-1234" required>
+                            </div>
+                        </div>
+
+                        <div class="form-row-2">
+                            <div class="form-group">
+                                <label for="vVehicle">Vehicle Number (Optional)</label>
+                                <input type="text" id="vVehicle" placeholder="e.g. JH05AB1234">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="vGate">Entry Gate</label>
+                                <select id="vGate" required>
+                                    <option value="Main Gate">Main Gate</option>
+                                    <option value="Gate 2">Gate 2</option>
+                                    <option value="Gate 3">Gate 3</option>
+                                    <option value="Gate 4">Gate 4</option>
+                                    <option value="East Gate">East Gate</option>
+                                    <option value="West Gate">West Gate</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn-primary" style="margin-top: 10px;" id="generateBtn">Generate Pass</button>
+                    </form>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script type="module" src="vgp-new-pass.js"></script>
+</body>
+</html>

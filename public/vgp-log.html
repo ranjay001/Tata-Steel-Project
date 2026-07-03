@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visitor Log — E-GatePass Tata Steel</title>
+    <link rel="stylesheet" href="vgp-style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <!-- ─── SIDEBAR NAVIGATION ─── -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo-icon">🛡️</div>
+                <div class="sidebar-brand">
+                    <h2>E-GatePass</h2>
+                    <span>TATA STEEL · JAMSHEDPUR</span>
+                </div>
+            </div>
+            
+            <div class="sidebar-menu-title">Visitor Management</div>
+            <nav>
+                <ul class="sidebar-nav">
+                    <li class="sidebar-nav-item" id="menuDashboard">
+                        <a href="vgp-dashboard.html">
+                            <span>📊</span> Dashboard
+                        </a>
+                    </li>
+                    <li class="sidebar-nav-item" id="menuNewPass">
+                        <a href="vgp-new-pass.html">
+                            <span>📥</span> New Pass
+                        </a>
+                    </li>
+                    <li class="sidebar-nav-item" id="menuCheckOut">
+                        <a href="vgp-checkout.html">
+                            <span>📤</span> Check Out
+                        </a>
+                    </li>
+                    <li class="sidebar-nav-item" id="menuVisitorLog">
+                        <a href="vgp-log.html">
+                            <span>📅</span> Visitor Log
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <div class="operator-profile">
+                    <div class="operator-name" id="operatorName">Loading...</div>
+                    <div class="operator-role" id="operatorRole">Operator</div>
+                </div>
+                <button class="sidebar-logout-btn" id="logoutBtn">
+                    <span>🚪</span> Logout
+                </button>
+                <div class="sidebar-tagline">We also make tomorrow</div>
+            </div>
+        </aside>
+
+        <!-- ─── MAIN WRAPPER ─── -->
+        <div class="main-wrapper">
+            <!-- ─── APP HEADER ─── -->
+            <header class="app-header">
+                <div class="header-clock-section">
+                    <span class="header-clock-icon">🕒</span>
+                    <span id="liveClock">Loading Clock...</span>
+                </div>
+                <div class="header-right">
+                    <button class="lang-btn">🌐 EN</button>
+                </div>
+            </header>
+
+            <!-- ─── CONTENT BODY ─── -->
+            <main class="content-body">
+                <div class="welcome-banner" style="padding: 24px; margin-bottom: 24px;">
+                    <span>Tata Steel · Data Centre</span>
+                    <h2>Visitor Log</h2>
+                    <p>Gate pass entry / exit records and audit log</p>
+                </div>
+
+                <!-- Stats Summary Row -->
+                <div class="stats-row">
+                    <div class="stat-card" style="padding: 16px;">
+                        <div class="stat-icon-wrapper blue" style="width: 42px; height: 42px; font-size: 16px;">👤</div>
+                        <div class="stat-info">
+                            <span class="stat-value" id="logStatTotal" style="font-size: 1.5rem;">0</span>
+                            <span class="stat-label" style="font-size: 0.65rem;">Total Passes</span>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card" style="padding: 16px;">
+                        <div class="stat-icon-wrapper green" style="width: 42px; height: 42px; font-size: 16px;">📥</div>
+                        <div class="stat-info">
+                            <span class="stat-value" id="logStatInside" style="font-size: 1.5rem;">0</span>
+                            <span class="stat-label" style="font-size: 0.65rem;">Currently Inside</span>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card" style="padding: 16px;">
+                        <div class="stat-icon-wrapper orange" style="width: 42px; height: 42px; font-size: 16px;">📤</div>
+                        <div class="stat-info">
+                            <span class="stat-value" id="logStatExited" style="font-size: 1.5rem;">0</span>
+                            <span class="stat-label" style="font-size: 0.65rem;">Exited</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Filter Panel -->
+                <section class="log-filters-panel">
+                    <h4>Filter Records</h4>
+                    <div class="filters-grid">
+                        <div class="form-group">
+                            <label for="filterFrom">From</label>
+                            <input type="date" id="filterFrom">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="filterTo">To</label>
+                            <input type="date" id="filterTo">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="filterGate">Gate</label>
+                            <select id="filterGate">
+                                <option value="">All Gates</option>
+                                <option value="Main Gate">Main Gate</option>
+                                <option value="Gate 2">Gate 2</option>
+                                <option value="Gate 3">Gate 3</option>
+                                <option value="Gate 4">Gate 4</option>
+                                <option value="East Gate">East Gate</option>
+                                <option value="West Gate">West Gate</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="filterStatus">Status</label>
+                            <select id="filterStatus">
+                                <option value="">All</option>
+                                <option value="IN">Inside</option>
+                                <option value="OUT">Exited</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="filterSearch">Search...</label>
+                            <input type="text" id="filterSearch" placeholder="Name, Phone, Pass...">
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 16px; display: flex; justify-content: space-between; align-items: center;">
+                        <span style="font-size: 0.82rem; color: var(--text-secondary); font-weight: 600;" id="recordsCount">Records (0)</span>
+                        <button class="btn-export" id="exportBtn">
+                            <span>📄</span> Export to CSV
+                        </button>
+                    </div>
+                </section>
+
+                <!-- Data Table Panel -->
+                <section class="table-panel-card">
+                    <div class="table-responsive">
+                        <table class="log-table">
+                            <thead>
+                                <tr>
+                                    <th>Pass Number</th>
+                                    <th>Visitor Name</th>
+                                    <th>Phone</th>
+                                    <th>Company</th>
+                                    <th>Whom to Meet</th>
+                                    <th>Entry Gate</th>
+                                    <th>In Time</th>
+                                    <th>Out Time</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="logTableBody">
+                                <tr>
+                                    <td colspan="9" style="text-align: center; color: var(--text-muted); padding: 40px 0;">
+                                        Loading log database...
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <script type="module" src="vgp-log.js"></script>
+</body>
+</html>

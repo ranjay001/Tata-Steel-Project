@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tata Steel - Canteen Punch System</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+        body { background: #f0f4f8; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; }
+        .punch-card { background: white; max-width: 450px; width: 100%; padding: 30px; border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.1); border-top: 6px solid #0d47a1; }
+        .brand { text-align: center; margin-bottom: 25px; }
+        .brand h2 { color: #0d47a1; letter-spacing: 1px; }
+        .brand span { font-size: 12px; color: #666; font-weight: bold; }
+        h3 { text-align: center; color: #333; margin-bottom: 20px; font-size: 18px; text-transform: uppercase; }
+        .form-group { margin-bottom: 18px; }
+        .form-group label { display: block; font-size: 13px; font-weight: 600; color: #475569; margin-bottom: 6px; }
+        .form-group input, .form-group select { width: 100%; padding: 10px 12px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 14px; outline: none; transition: 0.2s; }
+        .form-group input:focus, .form-group select:focus { border-color: #0d47a1; box-shadow: 0 0 0 3px rgba(13,71,161,0.1); }
+        .btn-container { display: flex; gap: 15px; margin-top: 25px; }
+        .punch-btn { flex: 1; padding: 12px; border: none; border-radius: 6px; font-size: 15px; font-weight: bold; cursor: pointer; color: white; transition: 0.2s; }
+        .btn-in { background: #2e7d32; }
+        .btn-in:hover { background: #1b5e20; }
+        .btn-out { background: #c62828; }
+        .btn-out:hover { background: #b71c1c; }
+        .msg { margin-top: 15px; text-align: center; font-size: 14px; font-weight: 600; padding: 10px; border-radius: 6px; display: none; }
+        .msg-success { background: #e8f5e9; color: #2e7d32; border: 1px solid #c8e6c9; }
+        .msg-error { background: #ffebee; color: #c62828; border: 1px solid #ffcdd2; }
+    </style>
+</head>
+<body>
+
+    <div class="punch-card">
+        <div class="brand">
+            <h2>TATA STEEL</h2>
+            <span>VENDORS ATTENDANCE CAPTURE TERMINAL</span>
+        </div>
+        
+        <h3>Terminal Live Kiosk</h3>
+        
+        <form id="punchForm" onsubmit="event.preventDefault();">
+            <div class="form-group">
+                <label>Service Provider (SP) Number</label>
+                <input type="text" id="sp_no" required placeholder="Enter 6-digit SP code (e.g. 806759)">
+            </div>
+
+            <div class="form-group">
+                <label>Select Designated Canteen</label>
+                <select id="can_id">
+                    <option value="C01">GBF Contractor Canteen (C01)</option>
+                    <option value="C02">CRM Plant Canteen (C02)</option>
+                    <option value="C03">LD2 Operation Complex (C03)</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Operational Plant Zone Location</label>
+                <select id="loc_id">
+                    <option value="L01">Jamshedpur Works (East Gate)</option>
+                    <option value="L02">Cold Rolling Mill Area</option>
+                    <option value="L03">Steel Melting Shop (SMS-2)</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Current Meal Window</label>
+                <select id="meal_id">
+                    <option value="M01">Breakfast (M01)</option>
+                    <option value="M02">Lunch (M02)</option>
+                    <option value="M03">Evening Snack (M03)</option>
+                    <option value="M04">Dinner (M04)</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Trolley Distribution Point</label>
+                <select id="trolley_point">
+                    <option value="Point A - Main Bay">Point A - Main Bay</option>
+                    <option value="Point B - North Sector">Point B - North Sector</option>
+                    <option value="Point C - Dispatch Lane">Point C - Dispatch Lane</option>
+                </select>
+            </div>
+
+            <div class="btn-container">
+                <button type="button" class="punch-btn btn-in" onclick="triggerPunch('In')">Punch IN 📥</button>
+                <button type="button" class="punch-btn btn-out" onclick="triggerPunch('Out')">Punch OUT 📤</button>
+            </div>
+            
+            <div id="statusMsg" class="msg"></div>
+        </form>
+    </div>
+
+    <script>
+        async function triggerPunch(actionType) {
+            const spNoField = document.getElementById('sp_no');
+            const sp_no = spNoField ? spNoField.value.trim() : "";
+            
+            const msgBox = document.getElementById('statusMsg');
+            if (!msgBox) return;
+
+            if (!sp_no) {
+                msgBox.className = "msg msg-error";
+                msgBox.innerText = "Please enter a valid Service Provider (SP) Number.";
+                msgBox.style.display = "block";
+                return;
+            }
+
+            const payload = {
+                tva_sp_no: sp_no,
+                tva_can_id: document.getElementById('can_id').value,
+                tva_loc_id: document.getElementById('loc_id').value,
+                tva_meal_id: document.getElementById('meal_id').value,
+                tva_trolley_point: document.getElementById('trolley_point').value,
+                tva_flag: actionType
+            };
+
+            try {
+                msgBox.style.display = "none"; // Reset status visibility
+                
+                const response = await fetch('/api/punch', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const result = await response.json();
+
+                if (response.ok && result.success) {
+                    msgBox.className = "msg msg-success";
+                    msgBox.innerText = result.message;
+                    if(spNoField) spNoField.value = ""; // Form input field reset
+                } else {
+                    msgBox.className = "msg msg-error";
+                    msgBox.innerText = result.message || "Business logic constraint violated.";
+                }
+            } catch (err) {
+                msgBox.className = "msg msg-error";
+                msgBox.innerText = "Network failure while hitting API Gateway.";
+                console.error("Punch system connection fault:", err);
+            }
+            
+            msgBox.style.display = "block";
+        }
+    </script>
+</body>
+</html>
